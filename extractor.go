@@ -73,20 +73,6 @@ func (extr *ContentExtractor) GetTitle(document *goquery.Document) string {
 		}
 		title = titleElement.Text()
 	}
-
-	for _, delimiter := range titleDelimiters {
-		if strings.Contains(title, delimiter) {
-			title = extr.splitTitle(strings.Split(title, delimiter))
-			break
-		}
-	}
-
-	title = strings.Replace(title, motleyReplacement, "", -1)
-
-	if extr.config.debug {
-		log.Printf("Page title is %s\n", title)
-	}
-
 	return strings.TrimSpace(title)
 }
 
