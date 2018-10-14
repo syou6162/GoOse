@@ -87,6 +87,17 @@ func (extr *ContentExtractor) GetMetaOgDescription(document *goquery.Document) s
 	return strings.TrimSpace(description)
 }
 
+func (extr *ContentExtractor) GetMetaOgType(document *goquery.Document) string {
+	ogType := ""
+
+	ogTypeElement := document.Find(`meta[property="og:type"]`)
+	if ogTypeElement != nil && ogTypeElement.Size() > 0 {
+		ogType, _ = ogTypeElement.Attr("content")
+	}
+
+	return strings.TrimSpace(ogType)
+}
+
 func (extr *ContentExtractor) splitTitle(titles []string) string {
 	largeTextLength := 0
 	largeTextIndex := 0

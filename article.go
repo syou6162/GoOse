@@ -13,6 +13,7 @@ type Article struct {
 	CleanedText       string             `json:"content,omitempty"`
 	MetaDescription   string             `json:"description,omitempty"`
 	MetaOgDescription string             `json:"ogdescription,omitempty"`
+	MetaOgType        string             `json:"ogtype,omitempty"`
 	MetaLang          string             `json:"lang,omitempty"`
 	MetaFavicon       string             `json:"favicon,omitempty"`
 	MetaKeywords      string             `json:"keywords,omitempty"`
