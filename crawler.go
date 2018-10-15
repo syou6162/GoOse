@@ -142,6 +142,7 @@ func (c Crawler) Crawl() (*Article, error) {
 	article.Title = extractor.GetTitle(document)
 	article.MetaOgDescription = extractor.GetMetaOgDescription(document)
 	article.MetaOgType = extractor.GetMetaOgType(document)
+	article.MetaOgImage = extractor.GetMetaOgImage(document)
 	article.MetaLang = extractor.GetMetaLanguage(document)
 	article.MetaFavicon = extractor.GetFavicon(document)
 

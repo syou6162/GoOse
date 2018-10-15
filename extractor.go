@@ -98,6 +98,17 @@ func (extr *ContentExtractor) GetMetaOgType(document *goquery.Document) string {
 	return strings.TrimSpace(ogType)
 }
 
+func (extr *ContentExtractor) GetMetaOgImage(document *goquery.Document) string {
+	ogImage := ""
+
+	ogImageElement := document.Find(`meta[property="og:image"]`)
+	if ogImageElement != nil && ogImageElement.Size() > 0 {
+		ogImage, _ = ogImageElement.Attr("content")
+	}
+
+	return strings.TrimSpace(ogImage)
+}
+
 func (extr *ContentExtractor) splitTitle(titles []string) string {
 	largeTextLength := 0
 	largeTextIndex := 0

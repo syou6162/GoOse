@@ -14,6 +14,7 @@ type Article struct {
 	MetaDescription   string             `json:"description,omitempty"`
 	MetaOgDescription string             `json:"ogdescription,omitempty"`
 	MetaOgType        string             `json:"ogtype,omitempty"`
+	MetaOgImage       string             `json:"ogimage,omitempty"`
 	MetaLang          string             `json:"lang,omitempty"`
 	MetaFavicon       string             `json:"favicon,omitempty"`
 	MetaKeywords      string             `json:"keywords,omitempty"`
