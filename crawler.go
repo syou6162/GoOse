@@ -130,7 +130,17 @@ func fillFaviconPath(origUrl string, faviconUrl string) string {
 	if err != nil {
 		return ""
 	}
-	return oUrl.Scheme + ":" + faviconUrl
+
+	// 相対パス
+	if fUrl.Host == "" {
+		return oUrl.Scheme + "://" + oUrl.Host + faviconUrl
+	}
+
+	if fUrl.Scheme == "" {
+		return oUrl.Scheme + ":" + faviconUrl
+	}
+
+	return ""
 }
 
 // Crawl fetches the HTML body and returns an Article
