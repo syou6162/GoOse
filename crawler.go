@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	"net/url"
 )
 
 // Crawler can fetch the target HTML page
@@ -116,6 +117,22 @@ func (c *Crawler) Preprocess() (*goquery.Document, error) {
 	return document, nil
 }
 
+func fillFaviconPath(origUrl string, faviconUrl string) string {
+	fUrl, err := url.Parse(faviconUrl)
+	if err != nil {
+		return "" // broken favicionUrl
+	}
+	if fUrl.IsAbs() {
+		return faviconUrl
+	}
+
+	oUrl, err := url.Parse(origUrl)
+	if err != nil {
+		return ""
+	}
+	return oUrl.Scheme + ":" + faviconUrl
+}
+
 // Crawl fetches the HTML body and returns an Article
 func (c Crawler) Crawl() (*Article, error) {
 	article := new(Article)
@@ -144,7 +161,7 @@ func (c Crawler) Crawl() (*Article, error) {
 	article.MetaOgType = extractor.GetMetaOgType(document)
 	article.MetaOgImage = extractor.GetMetaOgImage(document)
 	article.MetaLang = extractor.GetMetaLanguage(document)
-	article.MetaFavicon = extractor.GetFavicon(document)
+	article.MetaFavicon = fillFaviconPath(c.url, extractor.GetFavicon(document))
 
 	article.MetaDescription = extractor.GetMetaContentWithSelector(document, "meta[name#=(?i)^description$]")
 	article.MetaKeywords = extractor.GetMetaContentWithSelector(document, "meta[name#=(?i)^keywords$]")
