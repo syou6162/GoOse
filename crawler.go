@@ -161,7 +161,7 @@ func (c Crawler) Crawl() (*Article, error) {
 	article.MetaOgType = extractor.GetMetaOgType(document)
 	article.MetaOgImage = extractor.GetMetaOgImage(document)
 	article.MetaLang = extractor.GetMetaLanguage(document)
-	article.MetaFavicon = fillFaviconPath(c.url, extractor.GetFavicon(document))
+	article.MetaFavicon = extractor.GetFavicon(document, c.url)
 
 	article.MetaDescription = extractor.GetMetaContentWithSelector(document, "meta[name#=(?i)^description$]")
 	article.MetaKeywords = extractor.GetMetaContentWithSelector(document, "meta[name#=(?i)^keywords$]")

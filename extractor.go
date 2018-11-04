@@ -2,14 +2,6 @@ package goose
 
 import (
 	"container/list"
-	"log"
-	"math"
-	"net/url"
-	"regexp"
-	"strconv"
-	"strings"
-	"time"
-
 	"github.com/PuerkitoBio/goquery"
 	"github.com/araddon/dateparse"
 	"github.com/fatih/set"
@@ -17,6 +9,14 @@ import (
 	"github.com/jaytaylor/html2text"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
+	"log"
+	"math"
+	"net/http"
+	"net/url"
+	"regexp"
+	"strconv"
+	"strings"
+	"time"
 )
 
 const defaultLanguage = "en"
@@ -165,12 +165,21 @@ func (extr *ContentExtractor) GetMetaLanguage(document *goquery.Document) string
 }
 
 // GetFavicon returns the favicon set in the source, if the article has one
-func (extr *ContentExtractor) GetFavicon(document *goquery.Document) string {
+func (extr *ContentExtractor) GetFavicon(document *goquery.Document, url string) string {
 	favicon := ""
 	document.Find("link").EachWithBreak(func(i int, s *goquery.Selection) bool {
 		attr, exists := s.Attr("rel")
 		if exists && strings.Contains(attr, "icon") {
-			favicon, _ = s.Attr("href")
+			tmp, _ := s.Attr("href")
+			tmp = fillFaviconPath(url, tmp)
+			resp, err := http.Get(tmp)
+			if err != nil {
+				return true
+			}
+			if resp.StatusCode != 200 {
+				return true
+			}
+			favicon = tmp
 			return false
 		}
 		return true
