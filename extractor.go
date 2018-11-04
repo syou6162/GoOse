@@ -105,8 +105,16 @@ func (extr *ContentExtractor) GetMetaOgImage(document *goquery.Document) string 
 	if ogImageElement != nil && ogImageElement.Size() > 0 {
 		ogImage, _ = ogImageElement.Attr("content")
 	}
+	ogImage = strings.TrimSpace(ogImage)
 
-	return strings.TrimSpace(ogImage)
+	resp, err := http.Get(ogImage)
+	if err != nil {
+		return ""
+	}
+	if resp.StatusCode != 200 {
+		return ""
+	}
+	return ogImage
 }
 
 func (extr *ContentExtractor) splitTitle(titles []string) string {
