@@ -59,7 +59,7 @@ func GetDefaultConfiguration(args ...string) Configuration {
 		imageMagickIdentifyPath: "/usr/bin/identify", //not used in this version
 		browserUserAgent:        defaultUserAgent,
 		debug:                   false,
-		extractPublishDate:      true,
+		extractPublishDate:      false,
 		additionalDataExtractor: false,
 		stopWordsPath:           "resources/stopwords",
 		stopWords:               NewStopwords(), //TODO with path
