@@ -5,13 +5,13 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
-	"strconv"
 	"strings"
 	"time"
 
 	"net/url"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/araddon/dateparse"
 )
 
 // Crawler can fetch the target HTML page
@@ -185,11 +185,10 @@ func (c Crawler) Crawl() (*Article, error) {
 	article.Tags = extractor.GetTags(document)
 
 	if c.config.extractPublishDate {
-		publishDateTimestampStr := extractor.GetMetaContentWithSelector(document, "meta[property#=(?i)article:published_time]")
-		publishDateTimestamp, err := strconv.ParseInt(publishDateTimestampStr, 10, 64)
+		str := extractor.GetMetaContentWithSelector(document, "meta[property#=(?i)article:published_time]")
+		t, err := dateparse.ParseAny(str)
 		if err == nil {
-			pd := time.Unix(publishDateTimestamp, 0)
-			article.PublishDate = &pd
+			article.PublishDate = &t
 		} else {
 			if timestamp := extractor.GetPublishDate(document); timestamp != nil {
 				article.PublishDate = timestamp
