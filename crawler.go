@@ -186,13 +186,8 @@ func (c Crawler) Crawl() (*Article, error) {
 
 	if c.config.extractPublishDate {
 		str := extractor.GetMetaContentWithSelector(document, "meta[property#=(?i)article:published_time]")
-		t, err := dateparse.ParseAny(str)
-		if err == nil {
+		if t, err := dateparse.ParseAny(str); err == nil {
 			article.PublishDate = &t
-		} else {
-			if timestamp := extractor.GetPublishDate(document); timestamp != nil {
-				article.PublishDate = timestamp
-			}
 		}
 	}
 
